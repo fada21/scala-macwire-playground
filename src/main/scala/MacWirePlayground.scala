@@ -37,8 +37,8 @@ object MacWirePlayground extends App {
 
   case class Heart() extends LogCreation
 
-  case class CaptainPlanet(earth: Earth, fire: Fire, wind: Wind, water: Water, hearth: Heart) extends LogCreation {
-    println("By your powers combined.. I am Captain Planet!")
+  case class CaptainPlanet(earth: Earth, fire: Fire, wind: Wind, water: Water, hearth: Heart) {
+    println(s"... assembling $this. By your powers combined.. I am Captain Planet!")
 
     def eliminate(pollution: Pollution) = {
       println(s"${pollution.pollutionType} eliminated. Go Planet!")
@@ -54,7 +54,7 @@ object MacWirePlayground extends App {
   }
 
   trait PollutionModule {
-    lazy val wastePlant = wire[WastePlant]
+    def wastePlant = wire[WastePlant]
 
     lazy val evilWorkers = wire[EvilWorkers]
 
@@ -74,10 +74,9 @@ object MacWirePlayground extends App {
   trait AppModule extends PlaneteersModule with PollutionModule {
 
     def go = {
-      println()
+      println(1 to 30 map (_ => "=") mkString (""))
       val pollution = wastePlant.pollute()
       captainPlanet.eliminate(pollution)
-
     }
   }
 
@@ -87,6 +86,8 @@ object MacWirePlayground extends App {
 
   oilModule.go
   oilModule.go
+  oilModule.go
+
   coalModule.go
 
 }
